@@ -1,0 +1,9 @@
+parameters:
+    paths:
+        - app
+        - routes
+        - database/factories
+        - database/seeders
+        - tests
+    level: 7
+    reportUnmatchedIgnoredErrors: true
