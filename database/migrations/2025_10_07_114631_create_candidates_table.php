@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('candidates', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
         });
     }
 

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('region_id')->constrained('regions');
             $table->unsignedInteger('stage_number');
             $table->unsignedInteger('number_of_voters');
-            $table->timestamps();
 
             $table->unique(['region_id', 'stage_number']);
         });
