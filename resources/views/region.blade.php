@@ -10,7 +10,7 @@
     <table border="1">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>id</th>
             <th>Номер участка</th>
             <th>Количество голосующих</th>
         </tr>
