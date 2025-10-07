@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PollingStationController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,3 +15,5 @@ Route::get('/hello', static function () {
 Route::get('/region', [RegionController::class, 'index']);
 
 Route::get('/region/{id}', [RegionController::class, 'show']);
+
+Route::get('/pollingstation', [PollingStationController::class, 'index']);
