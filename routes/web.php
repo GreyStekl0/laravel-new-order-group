@@ -17,3 +17,5 @@ Route::get('/region', [RegionController::class, 'index']);
 Route::get('/region/{id}', [RegionController::class, 'show']);
 
 Route::get('/pollingstation', [PollingStationController::class, 'index']);
+
+Route::get('/pollingstation/{id}', [PollingStationController::class, 'show']);

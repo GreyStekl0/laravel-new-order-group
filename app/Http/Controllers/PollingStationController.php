@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PollingStation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class PollingStationController extends Controller
@@ -37,9 +38,14 @@ class PollingStationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
-        //
+        $total = DB::table('polling_station_results')->selectRaw('SUM(number_of_voters) as total')->where('polling_station_id', $id)->first();
+
+        return view('polling_station', [
+            'pollingStation' => PollingStation::query()->where('id', $id)->first(),
+            'total' => $total,
+        ]);
     }
 
     /**
