@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PollingStationController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', static function () {
@@ -9,3 +11,11 @@ Route::get('/', static function () {
 Route::get('/hello', static function () {
     return view('hello', ['title' => 'hello world']);
 });
+
+Route::get('/region', [RegionController::class, 'index']);
+
+Route::get('/region/{id}', [RegionController::class, 'show']);
+
+Route::get('/pollingstation', [PollingStationController::class, 'index']);
+
+Route::get('/pollingstation/{id}', [PollingStationController::class, 'show']);
