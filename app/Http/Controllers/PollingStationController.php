@@ -49,10 +49,12 @@ class PollingStationController extends Controller
      */
     public function show(string $id): View
     {
-        $total = DB::table('polling_station_results')->selectRaw('SUM(number_of_voters) as total')->where('polling_station_id', $id)->first();
+        $total = DB::table('polling_station_results')
+            ->where('polling_station_id', $id)
+            ->sum('number_of_voters');
 
         return view('polling_station', [
-            'pollingStation' => PollingStation::query()->where('id', $id)->first(),
+            'pollingStation' => PollingStation::findOrFail($id),
             'total' => $total,
         ]);
     }
@@ -89,6 +91,7 @@ class PollingStationController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         PollingStation::destroy($id);
+
         return redirect()->route('pollingStation.index');
     }
 }
