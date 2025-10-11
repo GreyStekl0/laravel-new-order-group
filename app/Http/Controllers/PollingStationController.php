@@ -18,7 +18,7 @@ class PollingStationController extends Controller
     public function index(): View
     {
         return view('polling_stations', [
-            'pollingStations' => PollingStation::all(),
+            'pollingStations' => PollingStation::with('region')->get(),
         ]);
     }
 
@@ -41,7 +41,7 @@ class PollingStationController extends Controller
         $item = new PollingStation($validated);
         $item->save();
 
-        return redirect('/polling_station');
+        return redirect()->route('pollingStation.index');
     }
 
     /**
@@ -80,14 +80,15 @@ class PollingStationController extends Controller
         $pollingStation->number_of_voters = $validated['number_of_voters'];
         $pollingStation->save();
 
-        return redirect('/polling_station');
+        return redirect()->route('pollingStation.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        PollingStation::destroy($id);
+        return redirect()->route('pollingStation.index');
     }
 }

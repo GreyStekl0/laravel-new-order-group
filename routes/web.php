@@ -16,14 +16,16 @@ Route::get('/region', [RegionController::class, 'index']);
 
 Route::get('/region/{id}', [RegionController::class, 'show']);
 
-Route::get('/pollingstation', [PollingStationController::class, 'index']);
+Route::get('/pollingstation', [PollingStationController::class, 'index'])->name('pollingStation.index');
 
-Route::post('/pollingstation', [PollingStationController::class, 'store']);
+Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store');
 
-Route::get('/pollingstation/create', [PollingStationController::class, 'create']);
+Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create');
 
-Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit']);
+Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show');
 
-Route::post('/pollingstation/update/{id}', [PollingStationController::class, 'update']);
+Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit');
 
-Route::get('/pollingstation/{id}', [PollingStationController::class, 'show']);
+Route::post('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
+
+Route::get('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy');
