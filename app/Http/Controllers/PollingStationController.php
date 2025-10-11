@@ -76,11 +76,8 @@ class PollingStationController extends Controller
     public function update(PollingStationRequest $request, string $id): RedirectResponse|Redirector
     {
         $validated = $request->validated();
-        $pollingStation = PollingStation::query()->where('id', $id)->first();
-        $pollingStation->region_id = $validated['region_id'];
-        $pollingStation->stage_number = $validated['stage_number'];
-        $pollingStation->number_of_voters = $validated['number_of_voters'];
-        $pollingStation->save();
+        $pollingStation = PollingStation::findOrFail($id);
+        $pollingStation->update($validated);
 
         return redirect()->route('pollingStation.index');
     }
