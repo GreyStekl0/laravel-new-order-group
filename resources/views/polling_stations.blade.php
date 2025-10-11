@@ -31,7 +31,11 @@
             <td>
                 <a href="{{ route('pollingStation.show', $station->id) }}">Просмотр</a>
                 <a href="{{ route('pollingStation.edit', $station->id) }}">Редактировать</a>
-                <a href="{{ route('pollingStation.destroy', $station->id) }}">Удалить</a>
+                <form action="{{ route('pollingStation.destroy', $station->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот участок?')">Удалить</button>
+                </form>
             </td>
         </tr>
     @empty
