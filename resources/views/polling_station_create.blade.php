@@ -9,7 +9,7 @@
 </head>
 <body>
 <h2> Добавление участка для голосования </h2>
-<form method="post" action={{ url('pollingStation') }}>
+<form method="post" action={{ url('pollingstation') }}>
     @csrf
     <label> ID Региона: </label>
     <select name="region_id">

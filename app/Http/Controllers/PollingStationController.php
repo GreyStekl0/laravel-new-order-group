@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PollingStation;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -34,7 +35,15 @@ class PollingStationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'region_id' => 'integer',
+            'stage_number' => 'integer',
+            'number_of_voters' => 'integer:',
+        ]);
+        $item = new PollingStation($validated);
+        $item->save();
+
+        return redirect('/polling_station');
     }
 
     /**
