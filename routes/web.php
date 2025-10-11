@@ -26,6 +26,6 @@ Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->n
 
 Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit');
 
-Route::post('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
+Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
 
 Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy');
