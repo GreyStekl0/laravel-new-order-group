@@ -12,8 +12,8 @@
 <form method="post" action={{ url('pollingStation') }}>
     @csrf
     <label> ID Региона: </label>
-    <select name="region_id" value="{{ old('region_id') }}">
-        <option style="">
+    <select name="region_id">
+        <option value="">Выберите регион</option>
         @foreach($regions as $region)
             <option value="{{ $region -> id }}"
                     @if(old('region_id') == $region -> id) selected
