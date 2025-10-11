@@ -27,13 +27,13 @@
     <br>
 
     <label> Номер участка </label>
-    <input type="text" name="stage_number" value="{{ old('stage_number') }}">
+    <input type="number" name="stage_number" value="{{ old('stage_number') }}">
     @error('stage_number')
     <div class="is-invalid">{{ $message }}</div>
     @enderror
     <br>
     <label> Количество голосующих </label>
-    <input type="text" name="number_of_voters" value="{{ old('number_of_voters') }}">
+    <input type="number" name="number_of_voters" value="{{ old('number_of_voters') }}">
     @error('number_of_voters')
     <div class="is-invalid">{{ $message }}</div>
     @enderror
