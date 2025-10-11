@@ -1,3 +1,7 @@
+@php use App\Models\PollingStation; @endphp
+<?php
+/** @var PollingStation $station */
+?>
 <!doctype html>
 <html lang="ru">
 <head>
