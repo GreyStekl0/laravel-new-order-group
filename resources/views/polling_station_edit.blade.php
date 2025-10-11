@@ -9,8 +9,9 @@
 </head>
 <body>
 <h2> Редактирование участка для голосования </h2>
-<form method="post" action="{{ url('pollingstation/update/'.$pollingStation->id) }}">
+<form method="POST" action="{{ route('pollingStation.update', $pollingStation->id) }}">
     @csrf
+    @method('PATCH')
     <label> ID Региона: </label>
     <select name="region_id">
         <option value="">Выберите регион</option>
