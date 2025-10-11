@@ -61,9 +61,12 @@ class PollingStationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): void
+    public function edit(string $id): View
     {
-        //
+        return view('polling_station_edit', [
+            'pollingStation' => PollingStation::query()->where('id', $id)->first(),
+            'regions' => Region::all(),
+        ]);
     }
 
     /**
