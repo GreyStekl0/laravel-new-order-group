@@ -6,7 +6,6 @@ use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
 use App\Models\Region;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -72,9 +71,16 @@ class PollingStationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): void
+    public function update(PollingStationRequest $request, string $id): RedirectResponse|Redirector
     {
-        //
+        $validated = $request->validated();
+        $pollingStation = PollingStation::query()->where('id', $id)->first();
+        $pollingStation->region_id = $validated['region_id'];
+        $pollingStation->stage_number = $validated['stage_number'];
+        $pollingStation->number_of_voters = $validated['number_of_voters'];
+        $pollingStation->save();
+
+        return redirect('/polling_station');
     }
 
     /**

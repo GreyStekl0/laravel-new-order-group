@@ -24,4 +24,6 @@ Route::get('/pollingstation/create', [PollingStationController::class, 'create']
 
 Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit']);
 
+Route::post('/pollingstation/update/{id}', [PollingStationController::class, 'update']);
+
 Route::get('/pollingstation/{id}', [PollingStationController::class, 'show']);

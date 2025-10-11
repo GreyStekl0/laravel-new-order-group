@@ -23,12 +23,20 @@ class PollingStationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $pollingStationId = $this->route('id');
+
         return [
             'region_id' => ['required', 'integer', 'exists:regions,id'],
-            'stage_number' => ['required', 'integer', 'min:1',
-                Rule::unique('polling_stations')->where(function ($query) {
-                    return $query->where('region_id', $this->input('region_id'));
-                }), ],
+            'stage_number' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('polling_stations')
+                    ->where(function ($query) {
+                        return $query->where('region_id', $this->input('region_id'));
+                    })
+                    ->ignore($pollingStationId),
+            ],
             'number_of_voters' => ['required', 'integer', 'min:0'],
         ];
     }
