@@ -63,7 +63,7 @@ class PollingStationController extends Controller
     public function edit(string $id): View
     {
         return view('polling_station_edit', [
-            'pollingStation' => PollingStation::query()->where('id', $id)->first(),
+            'pollingStation' => PollingStation::findOrFail($id),
             'regions' => Region::all(),
         ]);
     }
