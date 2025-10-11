@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('polling_station_id')->constrained('polling_stations');
             $table->foreignId('candidate_id')->constrained('candidates');
             $table->unsignedInteger('number_of_voters')->default(0);
+            $table->timestamps();
 
             $table->unique(['polling_station_id', 'candidate_id']);
         });

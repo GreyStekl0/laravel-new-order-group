@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
-use Illuminate\Http\Request;
+use App\Models\Region;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -15,24 +18,30 @@ class PollingStationController extends Controller
     public function index(): View
     {
         return view('polling_stations', [
-            'pollingStations' => PollingStation::all(),
+            'pollingStations' => PollingStation::with('region')->get(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('polling_station_create', [
+            'regions' => Region::all(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PollingStationRequest $request): RedirectResponse|Redirector
     {
-        //
+        $validated = $request->validated();
+        $item = new PollingStation($validated);
+        $item->save();
+
+        return redirect()->route('pollingStation.index');
     }
 
     /**
@@ -40,10 +49,12 @@ class PollingStationController extends Controller
      */
     public function show(string $id): View
     {
-        $total = DB::table('polling_station_results')->selectRaw('SUM(number_of_voters) as total')->where('polling_station_id', $id)->first();
+        $total = DB::table('polling_station_results')
+            ->where('polling_station_id', $id)
+            ->sum('number_of_voters');
 
         return view('polling_station', [
-            'pollingStation' => PollingStation::query()->where('id', $id)->first(),
+            'pollingStation' => PollingStation::findOrFail($id),
             'total' => $total,
         ]);
     }
@@ -51,24 +62,33 @@ class PollingStationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
-        //
+        return view('polling_station_edit', [
+            'pollingStation' => PollingStation::findOrFail($id),
+            'regions' => Region::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PollingStationRequest $request, string $id): RedirectResponse|Redirector
     {
-        //
+        $validated = $request->validated();
+        $pollingStation = PollingStation::findOrFail($id);
+        $pollingStation->update($validated);
+
+        return redirect()->route('pollingStation.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        PollingStation::destroy($id);
+
+        return redirect()->route('pollingStation.index');
     }
 }

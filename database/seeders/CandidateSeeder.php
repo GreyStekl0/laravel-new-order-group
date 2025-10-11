@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Candidate;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CandidateSeeder extends Seeder
 {
@@ -12,9 +12,7 @@ class CandidateSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('candidates')->insert([
-            ['name' => 'Против всех'],
-            ['name' => 'Недействительные бюллетени'],
-        ]);
+        Candidate::create(['name' => 'Против всех']);
+        Candidate::create(['name' => 'Недействительные бюллетени']);
     }
 }
