@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +20,18 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read int|null $candidates_count
+ *
+ * @method static Builder<static>|PollingStation newModelQuery()
+ * @method static Builder<static>|PollingStation newQuery()
+ * @method static Builder<static>|PollingStation query()
+ * @method static Builder<static>|PollingStation whereCreatedAt($value)
+ * @method static Builder<static>|PollingStation whereId($value)
+ * @method static Builder<static>|PollingStation whereNumberOfVoters($value)
+ * @method static Builder<static>|PollingStation whereRegionId($value)
+ * @method static Builder<static>|PollingStation whereStageNumber($value)
+ * @method static Builder<static>|PollingStation whereUpdatedAt($value)
+ *
+ * @mixin Eloquent
  */
 class PollingStation extends Model
 {
