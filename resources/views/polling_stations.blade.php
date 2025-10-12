@@ -2,7 +2,7 @@
 <?php
 /** @var PollingStation $station */
 ?>
-<!doctype html>
+    <!doctype html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -45,5 +45,8 @@
     @endforelse
     </tbody>
 </table>
+
+{{ $pollingStations->links() }}
+
 </body>
 </html>
