@@ -13,8 +13,9 @@ use Illuminate\View\View;
 
 class PollingStationController extends Controller
 {
-    private const DEFAULT_PER_PAGE = 7;
-    private const MAX_PER_PAGE = 100;
+    private const int DEFAULT_PER_PAGE = 7;
+
+    private const int MAX_PER_PAGE = 100;
 
     /**
      * Display a listing of the resource.
