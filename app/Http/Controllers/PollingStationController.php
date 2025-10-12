@@ -6,6 +6,7 @@ use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
 use App\Models\Region;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -15,10 +16,12 @@ class PollingStationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
+        $perpage = $request->perpage ?? 7;
+
         return view('polling_stations', [
-            'pollingStations' => PollingStation::with('region')->get(),
+            'pollingStations' => PollingStation::with('region')->paginate($perpage)->withQueryString(),
         ]);
     }
 
