@@ -18,7 +18,13 @@ class PollingStationController extends Controller
      */
     public function index(Request $request): View
     {
-        $perpage = $request->perpage ?? 7;
+        $perpage = $request->perpage;
+        // Validate perpage: must be integer between 1 and 100, else default to 7
+        if (!is_numeric($perpage) || intval($perpage) < 1 || intval($perpage) > 100) {
+            $perpage = 7;
+        } else {
+            $perpage = intval($perpage);
+        }
 
         return view('polling_stations', [
             'pollingStations' => PollingStation::with('region')->paginate($perpage)->withQueryString(),
