@@ -13,21 +13,30 @@ use Illuminate\View\View;
 
 class PollingStationController extends Controller
 {
+    private const DEFAULT_PER_PAGE = 7;
+    private const MAX_PER_PAGE = 100;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        $perpage = $request->perpage;
-        // Validate perpage: must be integer between 1 and 100, else default to 7
-        if (!is_numeric($perpage) || intval($perpage) < 1 || intval($perpage) > 100) {
-            $perpage = 7;
-        } else {
-            $perpage = intval($perpage);
-        }
+        $perPage = filter_var(
+            $request->query('perpage', self::DEFAULT_PER_PAGE),
+            FILTER_VALIDATE_INT,
+            [
+                'options' => [
+                    'default' => self::DEFAULT_PER_PAGE,
+                    'min_range' => 1,
+                    'max_range' => self::MAX_PER_PAGE,
+                ],
+            ],
+        );
 
         return view('polling_stations', [
-            'pollingStations' => PollingStation::with('region')->paginate($perpage)->withQueryString(),
+            'pollingStations' => PollingStation::with('region')
+                ->paginate($perPage)
+                ->withQueryString(),
         ]);
     }
 
