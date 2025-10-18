@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PollingStationController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +30,9 @@ Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'
 Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
 
 Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy');
+
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
