@@ -21,15 +21,15 @@ Route::get('/pollingstation', [PollingStationController::class, 'index'])->name(
 
 Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store');
 
-Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create');
+Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create')->middleware('auth');
 
 Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show');
 
-Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit');
+Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit')->middleware('auth');
 
-Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
+Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update')->middleware('auth');
 
-Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy');
+Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy')->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 
