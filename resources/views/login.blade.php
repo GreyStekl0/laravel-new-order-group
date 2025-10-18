@@ -10,13 +10,16 @@
 <body>
 @if($user)
     <h2>Здравствуйте, {{ $user->name }}</h2>
-    <a href="{{url('logout')}}">Выйти из системы</a>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit">Выйти из системы</button>
+    </form>
 @else
     <h2>Вход в систему</h2>
-    <form method="POST" action="{{url('auth')}}">
+    <form method="POST" action="{{route('auth')}}">
         @csrf
         <label>Email</label>
-        <input type="text" name="email" value="{{ old('email') }}"/>
+        <input type="email" name="email" value="{{ old('email') }}"/>
         @error('email')
         <div class="is-invalid">{{ $message }}</div>
         @enderror
@@ -27,7 +30,7 @@
         <div class="is-invalid">{{ $message }}</div>
         @enderror
         <br>
-        <input type="submit">
+        <button type="submit">Войти</button>
     </form>
     @error('error')
     <div class="is-invalid">{{ $message }}</div>
