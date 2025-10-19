@@ -19,10 +19,6 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::get('/error', static function () {
-    return view('error', ['message' => session('message')]);
-})->name('error');
-
 Route::middleware('auth')->group(function () {
     Route::controller(RegionController::class)->prefix('region')->name('region.')->group(function () {
         Route::get('/', 'index')->name('index');

@@ -25,7 +25,7 @@ class LoginController extends Controller
         ])->onlyInput('email', 'password');
     }
 
-    public function login(Request $request): View
+    public function login(): View
     {
         return view('login', ['user' => Auth::user()]);
     }

@@ -2,10 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Ошибка</title>
+    <title>403 - Доступ запрещён</title>
 </head>
 <body>
-<h2>{{ $message ?? 'Произошла ошибка' }}</h2>
+<h2>{{ $exception->getMessage() ?? 'Произошла ошибка' }}</h2>
 <a href="{{ url()->previous(url('/')) }}">Назад</a>
 </body>
 </html>
