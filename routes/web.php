@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PollingStationController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
@@ -12,20 +13,25 @@ Route::get('/hello', static function () {
     return view('hello', ['title' => 'hello world']);
 });
 
-Route::get('/region', [RegionController::class, 'index']);
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/auth', 'authenticate')->middleware('guest')->name('auth');
+    Route::post('/logout', 'logout')->middleware('auth')->name('logout');
+});
 
-Route::get('/region/{id}', [RegionController::class, 'show']);
+Route::middleware('auth')->group(function () {
+    Route::controller(RegionController::class)->prefix('region')->name('region.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+    });
 
-Route::get('/pollingstation', [PollingStationController::class, 'index'])->name('pollingStation.index');
-
-Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store');
-
-Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create');
-
-Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show');
-
-Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit');
-
-Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update');
-
-Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy');
+    Route::controller(PollingStationController::class)->prefix('pollingstation')->name('pollingStation.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+        Route::get('/edit/{id}', 'edit')->name('edit')->whereNumber('id');
+        Route::patch('/update/{id}', 'update')->name('update')->whereNumber('id');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy')->whereNumber('id');
+    });
+});

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Gate;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,5 +22,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::defaultView('pagination::default');
+
+        $abilities = [
+            'manage-polling-stations',
+            'manage-candidates',
+            'manage-regions',
+            'manage-polling-station-results',
+        ];
+
+        foreach ($abilities as $ability) {
+            Gate::define($ability, static fn ($user) => $user->role === 'admin');
+        }
     }
 }

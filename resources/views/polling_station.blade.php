@@ -25,7 +25,7 @@
         @endforeach
         </tbody>
     </table>
-    <h2>{{"Итого голосов: ".$total->total}}</h2>
+    <h2>{{"Итого голосов: ".$total}}</h2>
 @endif
 </body>
 </html>

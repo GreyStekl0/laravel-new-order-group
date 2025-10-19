@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
 use App\Models\Region;
+use Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -46,6 +47,8 @@ class PollingStationController extends Controller
      */
     public function create(): View
     {
+        Gate::authorize('manage-polling-stations');
+
         return view('polling_station_create', [
             'regions' => Region::all(),
         ]);
@@ -83,6 +86,8 @@ class PollingStationController extends Controller
      */
     public function edit(string $id): View
     {
+        Gate::authorize('manage-polling-stations');
+
         return view('polling_station_edit', [
             'pollingStation' => PollingStation::findOrFail($id),
             'regions' => Region::all(),
@@ -106,7 +111,9 @@ class PollingStationController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        PollingStation::destroy($id);
+        Gate::authorize('manage-polling-stations');
+
+        PollingStation::findOrFail($id)->delete();
 
         return redirect()->route('pollingStation.index');
     }
