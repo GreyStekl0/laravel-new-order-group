@@ -13,30 +13,29 @@ Route::get('/hello', static function () {
     return view('hello', ['title' => 'hello world']);
 });
 
-Route::get('/region', [RegionController::class, 'index'])->name('region.index')->middleware('auth');
-
-Route::get('/region/{id}', [RegionController::class, 'show'])->name('region.show')->middleware('auth');
-
-Route::get('/pollingstation', [PollingStationController::class, 'index'])->name('pollingStation.index')->middleware('auth');
-
-Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store')->middleware('auth');
-
-Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create')->middleware('auth');
-
-Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show')->middleware('auth');
-
-Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit')->middleware('auth');
-
-Route::patch('/pollingstation/update/{id}', [PollingStationController::class, 'update'])->name('pollingStation.update')->middleware('auth');
-
-Route::delete('/pollingstation/destroy/{id}', [PollingStationController::class, 'destroy'])->name('pollingStation.destroy')->middleware('auth');
-
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/auth', 'authenticate')->name('auth');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
 Route::get('/error', static function () {
     return view('error', ['message' => session('message')]);
 })->name('error');
+
+Route::middleware('auth')->group(function () {
+    Route::controller(RegionController::class)->prefix('region')->name('region.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+    });
+
+    Route::controller(PollingStationController::class)->prefix('pollingstation')->name('pollingStation.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+        Route::get('/edit/{id}', 'edit')->name('edit')->whereNumber('id');
+        Route::patch('/update/{id}', 'update')->name('update')->whereNumber('id');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy')->whereNumber('id');
+    });
+});

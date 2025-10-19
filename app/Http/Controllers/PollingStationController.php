@@ -47,6 +47,8 @@ class PollingStationController extends Controller
      */
     public function create(): View
     {
+        Gate::authorize('manage-polling-stations');
+
         return view('polling_station_create', [
             'regions' => Region::all(),
         ]);
@@ -84,6 +86,8 @@ class PollingStationController extends Controller
      */
     public function edit(string $id): View
     {
+        Gate::authorize('manage-polling-stations');
+
         return view('polling_station_edit', [
             'pollingStation' => PollingStation::findOrFail($id),
             'regions' => Region::all(),
@@ -107,11 +111,9 @@ class PollingStationController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        if (! Gate::allows('manage-polling-stations', PollingStation::all()->where('id', $id)->first())) {
-            return redirect('/error')->with('message', 'У вас нет разрешения на удаление станции для голосования номер '.$id);
-        }
+        Gate::authorize('manage-polling-stations');
 
-        PollingStation::destroy($id);
+        PollingStation::findOrFail($id)->delete();
 
         return redirect()->route('pollingStation.index');
     }

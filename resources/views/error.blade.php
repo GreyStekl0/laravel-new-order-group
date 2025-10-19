@@ -5,7 +5,7 @@
     <title>Ошибка</title>
 </head>
 <body>
-<h2>{{$message}}</h2>
-<a href="{{ url('pollingstation') }}">Назад</a>
+<h2>{{ $message ?? 'Произошла ошибка' }}</h2>
+<a href="{{ url()->previous(url('/')) }}">Назад</a>
 </body>
 </html>
