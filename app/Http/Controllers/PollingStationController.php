@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
 use App\Models\Region;
+use Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -106,6 +107,10 @@ class PollingStationController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
+        if (! Gate::allows('manage-polling-stations', PollingStation::all()->where('id', $id)->first())) {
+            return redirect('/error')->with('message', 'У вас нет разрешения на удаление станции для голосования номер '.$id);
+        }
+
         PollingStation::destroy($id);
 
         return redirect()->route('pollingStation.index');

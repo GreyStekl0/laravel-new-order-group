@@ -13,17 +13,17 @@ Route::get('/hello', static function () {
     return view('hello', ['title' => 'hello world']);
 });
 
-Route::get('/region', [RegionController::class, 'index']);
+Route::get('/region', [RegionController::class, 'index'])->name('region.index')->middleware('auth');
 
-Route::get('/region/{id}', [RegionController::class, 'show']);
+Route::get('/region/{id}', [RegionController::class, 'show'])->name('region.show')->middleware('auth');
 
-Route::get('/pollingstation', [PollingStationController::class, 'index'])->name('pollingStation.index');
+Route::get('/pollingstation', [PollingStationController::class, 'index'])->name('pollingStation.index')->middleware('auth');
 
-Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store');
+Route::post('/pollingstation', [PollingStationController::class, 'store'])->name('pollingStation.store')->middleware('auth');
 
 Route::get('/pollingstation/create', [PollingStationController::class, 'create'])->name('pollingStation.create')->middleware('auth');
 
-Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show');
+Route::get('/pollingstation/{id}', [PollingStationController::class, 'show'])->name('pollingStation.show')->middleware('auth');
 
 Route::get('/pollingstation/edit/{id}', [PollingStationController::class, 'edit'])->name('pollingStation.edit')->middleware('auth');
 
@@ -36,3 +36,7 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
+
+Route::get('/error', static function () {
+    return view('error', ['message' => session('message')]);
+})->name('error');
