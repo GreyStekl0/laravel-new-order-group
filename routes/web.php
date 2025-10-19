@@ -15,8 +15,8 @@ Route::get('/hello', static function () {
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
-    Route::post('/auth', 'authenticate')->name('auth');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::post('/auth', 'authenticate')->middleware('guest')->name('auth');
+    Route::post('/logout', 'logout')->middleware('auth')->name('logout');
 });
 
 Route::middleware('auth')->group(function () {

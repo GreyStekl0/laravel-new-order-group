@@ -25,7 +25,7 @@
         @enderror
         <br>
         <label>Пароль</label>
-        <input type="password" name="password" value="{{ old('password') }}"/>
+        <input type="password" name="password" autocomplete="current-password"/>
         @error('password')
         <div class="is-invalid">{{ $message }}</div>
         @enderror
