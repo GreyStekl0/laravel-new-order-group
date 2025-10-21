@@ -17,6 +17,13 @@
 
                             {{-- Гость: форма авторизации --}}
                             @guest
+                                {{-- Общая ошибка аутентификации --}}
+                                @error('error')
+                                <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                                    <div>{{ $message }}</div>
+                                </div>
+                                @enderror
 
                                 <form method="POST" action="{{ route('auth') }}" novalidate>
                                     @csrf
@@ -69,7 +76,7 @@
                                 <div class="alert alert-success d-flex align-items-center small mb-4" role="alert">
                                     <i class="fa-solid fa-circle-check me-2"></i>
                                     Вы уже вошли как <strong
-                                        class="ms-1">{{ user()->name }}</strong>.
+                                        class="ms-1">{{ auth()->user()->name }}</strong>.
                                 </div>
 
                                 <a href="{{ route('pollingStation.index') }}" class="btn btn-danger btn-lg w-100 mb-3">
@@ -86,7 +93,7 @@
                         </div>
                     </div>
 
-                    {{-- Шуточный дисклеймер под карточкой --}}
+                    {{-- Дисклеймер под карточкой --}}
                     <p class="text-center text-body-secondary small mt-3 mb-0">
                         Заходя в аккаунт, вы торжественно соглашаетесь передать нам адрес родителей,
                         кличку любимого питомца, девичью фамилию бабушки, название любимого фильма и имя первой любви

@@ -21,7 +21,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'error' => 'The provided credentials do not match our records.',
+            'error' => 'Пользователь с такими данными не найден. Проверьте правильность введённых email и пароля.',
         ])->onlyInput('email');
     }
 
