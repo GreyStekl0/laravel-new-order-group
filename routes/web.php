@@ -9,6 +9,10 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
+Route::get('/navigation', static function () {
+    return view('navigation');
+})->middleware('auth')->name('navigation');
+
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/auth', 'authenticate')->middleware('guest')->name('auth');

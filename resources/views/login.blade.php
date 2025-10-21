@@ -19,7 +19,7 @@
                             @guest
                                 {{-- Общая ошибка аутентификации --}}
                                 @error('error')
-                                <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                                <div class="alert alert-danger d-flex align-items-center mb-3">
                                     <i class="fa-solid fa-circle-exclamation me-2"></i>
                                     <div>{{ $message }}</div>
                                 </div>
@@ -79,7 +79,7 @@
                                         class="ms-1">{{ auth()->user()->name }}</strong>.
                                 </div>
 
-                                <a href="{{ route('pollingStation.index') }}" class="btn btn-danger btn-lg w-100 mb-3">
+                                <a href="{{ route('navigation') }}" class="btn btn-danger btn-lg w-100 mb-3">
                                     <i class="fa-solid fa-forward me-2"></i> Перейти к разделам
                                 </a>
 

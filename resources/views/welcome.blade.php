@@ -105,7 +105,7 @@
 
                             @auth
                                 <div class="mt-4">
-                                    <a href="{{ route('pollingStation.index') }}" class="btn btn-outline-danger btn-lg w-100">
+                                    <a href="{{ route('navigation') }}" class="btn btn-outline-danger btn-lg w-100">
                                         <i class="fa-solid fa-forward me-2"></i> Перейти к примерам работы
                                     </a>
                                 </div>
