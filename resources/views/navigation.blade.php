@@ -127,7 +127,7 @@
                                         <div class="text-start">
                                             <h4 class="h5 mb-1">
                                                 <i class="fa-solid fa-house text-danger me-2"></i>
-                                                Хотите вернуться на главную?
+                                                Хотите вернуться на главную, {{ auth()->user()->name }}?
                                             </h4>
                                             <p class="text-body-secondary small mb-0">
                                                 Узнайте больше о Laravel New Order Group
