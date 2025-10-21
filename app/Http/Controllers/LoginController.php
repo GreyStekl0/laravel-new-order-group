@@ -17,7 +17,8 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('navigation'));
+            return redirect()->intended(route('navigation'))
+                ->with('success', 'Вы успешно вошли в аккаунт.');
         }
 
         return back()->withErrors([
@@ -39,6 +40,7 @@ class LoginController extends Controller
 
         $session->regenerateToken();
 
-        return redirect()->intended(route('home'));
+        return redirect()->intended(route('home'))
+            ->with('success', 'Вы успешно вышли из аккаунта.');
     }
 }
