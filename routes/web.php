@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', static function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/navigation', static function () {
     return view('navigation');
