@@ -17,11 +17,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('login');
+            return redirect()->intended(route('navigation'));
         }
 
         return back()->withErrors([
-            'error' => 'The provided credentials do not match our records.',
+            'error' => 'Неверный email или пароль.',
         ])->onlyInput('email');
     }
 
@@ -39,6 +39,6 @@ class LoginController extends Controller
 
         $session->regenerateToken();
 
-        return redirect('login');
+        return redirect()->intended(route('home'));
     }
 }

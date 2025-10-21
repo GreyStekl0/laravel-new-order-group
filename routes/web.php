@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', static function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/hello', static function () {
-    return view('hello', ['title' => 'hello world']);
-});
+Route::get('/navigation', static function () {
+    return view('navigation');
+})->middleware('auth')->name('navigation');
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
