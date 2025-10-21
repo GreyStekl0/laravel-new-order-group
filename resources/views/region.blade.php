@@ -10,13 +10,17 @@
                 {{-- Заголовок --}}
                 <div class="row mb-4">
                     <div class="col-12">
-                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
                             <div>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb mb-2">
-                                        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Главная</a></li>
-                                        <li class="breadcrumb-item"><a href="{{ route('navigation') }}" class="text-decoration-none">Навигация</a></li>
-                                        <li class="breadcrumb-item"><a href="{{ route('region.index') }}" class="text-decoration-none">Регионы</a></li>
+                                        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Главная</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{{ route('navigation') }}"
+                                                                       class="text-decoration-none">Навигация</a></li>
+                                        <li class="breadcrumb-item"><a href="{{ route('region.index') }}"
+                                                                       class="text-decoration-none">Регионы</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">{{ $region->name }}</li>
                                     </ol>
                                 </nav>
@@ -59,19 +63,21 @@
                             <div class="card border-0 bg-danger bg-opacity-10">
                                 <div class="card-body p-4">
                                     <div class="row text-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 py-3 py-md-0">
                                             <i class="fa-solid fa-location-dot text-danger fs-3 mb-2"></i>
                                             <div class="h4 mb-1">{{ $region->pollingStations->count() }}</div>
                                             <div class="text-body-secondary small">Участков</div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 py-3 py-md-0">
                                             <i class="fa-solid fa-users text-danger fs-3 mb-2"></i>
-                                            <div class="h4 mb-1">{{ number_format($region->pollingStations->sum('number_of_voters')) }}</div>
+                                            <div
+                                                class="h4 mb-1">{{ number_format($region->pollingStations->sum('number_of_voters')) }}</div>
                                             <div class="text-body-secondary small">Всего избирателей</div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 py-3 py-md-0">
                                             <i class="fa-solid fa-chart-line text-danger fs-3 mb-2"></i>
-                                            <div class="h4 mb-1">{{ number_format($region->pollingStations->avg('number_of_voters'), 0) }}</div>
+                                            <div
+                                                class="h4 mb-1">{{ number_format($region->pollingStations->avg('number_of_voters'), 0) }}</div>
                                             <div class="text-body-secondary small">Среднее на участок</div>
                                         </div>
                                     </div>
@@ -94,34 +100,34 @@
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle mb-0">
                                             <thead class="border-bottom">
-                                                <tr>
-                                                    <th class="px-4 py-3">ID</th>
-                                                    <th class="py-3">Номер участка</th>
-                                                    <th class="py-3">Количество избирателей</th>
-                                                    <th class="py-3 text-end pe-4">Действия</th>
-                                                </tr>
+                                            <tr>
+                                                <th class="px-4 py-3">ID</th>
+                                                <th class="py-3">Номер участка</th>
+                                                <th class="py-3">Количество избирателей</th>
+                                                <th class="py-3 text-end pe-4">Действия</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($region->pollingStations as $station)
-                                                    <tr>
-                                                        <td class="px-4 py-3">
-                                                            <span class="badge text-bg-secondary">{{ $station->id }}</span>
-                                                        </td>
-                                                        <td class="py-3">
-                                                            <strong>{{ $station->stage_number }}</strong>
-                                                        </td>
-                                                        <td class="py-3">
-                                                            <i class="fa-solid fa-users text-danger me-2"></i>
-                                                            {{ number_format($station->number_of_voters) }}
-                                                        </td>
-                                                        <td class="py-3 text-end pe-4">
-                                                            <a href="{{ route('pollingStation.show', $station->id) }}"
-                                                               class="btn btn-sm btn-outline-danger">
-                                                                <i class="fa-solid fa-eye me-1"></i> Подробнее
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                            @foreach($region->pollingStations as $station)
+                                                <tr>
+                                                    <td class="px-4 py-3">
+                                                        <span class="badge text-bg-secondary">{{ $station->id }}</span>
+                                                    </td>
+                                                    <td class="py-3">
+                                                        <strong>{{ $station->stage_number }}</strong>
+                                                    </td>
+                                                    <td class="py-3">
+                                                        <i class="fa-solid fa-users text-danger me-2"></i>
+                                                        {{ number_format($station->number_of_voters) }}
+                                                    </td>
+                                                    <td class="py-3 text-end pe-4">
+                                                        <a href="{{ route('pollingStation.show', $station->id) }}"
+                                                           class="btn btn-sm btn-outline-danger">
+                                                            <i class="fa-solid fa-eye me-1"></i> Подробнее
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
