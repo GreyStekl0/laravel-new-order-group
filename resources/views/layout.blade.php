@@ -14,6 +14,8 @@
     @yield('content')
 </main>
 
+@includeWhen(session('success'), 'notification')
+
 @include('footer')
 @stack('body-end')
 </body>
