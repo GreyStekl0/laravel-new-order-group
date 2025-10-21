@@ -133,7 +133,7 @@
 
 1. **Клонируйте репозиторий**
 ```bash
-git clone https://github.com/GreyStekl0/laravel-city-elections.git
+git clone https://github.com/GreyStekl0/laravel-new-order-group
 cd laravel-city-elections
 ```
 
