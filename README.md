@@ -194,8 +194,8 @@ php artisan serve
 ### Тестовые аккаунты
 
 После выполнения сидеров:
-- **Admin**: admin@email.com / adminPassword
-- **User**: user@email.com / userPassword
+- **Admin**: admin@mail.com / adminPassword
+- **User**: user@mail.com / userPassword
 
 ---
 

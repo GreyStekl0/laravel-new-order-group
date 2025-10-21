@@ -115,6 +115,8 @@ class PollingStationController extends Controller
 
         PollingStation::findOrFail($id)->delete();
 
-        return redirect()->route('pollingStation.index');
+        return redirect()
+            ->route('pollingStation.index')
+            ->with('success', 'Вы успешно удалили станцию для голосования.');
     }
 }
