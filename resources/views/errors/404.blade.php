@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', '403 - Доступ запрещён')
+@section('title', '404 - Страница не найдена')
 
 @section('content')
     <section class="bg-body min-vh-100 d-flex align-items-center">
@@ -13,36 +13,36 @@
                             {{-- Иконка ошибки --}}
                             <div class="mb-4">
                                 <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex p-4 mb-3">
-                                    <i class="fa-solid fa-ban text-danger" style="font-size: 4rem;"></i>
+                                    <i class="fa-solid fa-magnifying-glass text-danger" style="font-size: 4rem;"></i>
                                 </div>
                             </div>
 
                             {{-- Код ошибки --}}
                             <div class="mb-3">
                                 <span class="badge text-bg-danger fs-5 px-4 py-2">
-                                    Ошибка 403
+                                    Ошибка 404
                                 </span>
                             </div>
 
                             {{-- Заголовок --}}
                             <h1 class="display-6 fw-bold mb-3">
-                                Доступ запрещён
+                                Страница не найдена
                             </h1>
 
                             {{-- Сообщение об ошибке --}}
                             <p class="lead text-body-secondary mb-4">
-                                {{ $exception->getMessage() ?: 'У вас нет прав для доступа к этой странице' }}
+                                К сожалению, запрашиваемая вами страница не существует или была перемещена
                             </p>
 
                             {{-- Дополнительная информация --}}
-                            <div class="alert alert-danger d-flex align-items-start text-start mb-4" role="alert">
-                                <i class="fa-solid fa-circle-info me-3 mt-1"></i>
+                            <div class="alert alert-warning d-flex align-items-start text-start mb-4" role="alert">
+                                <i class="fa-solid fa-circle-exclamation me-3 mt-1"></i>
                                 <div>
-                                    <strong>Возможные причины:</strong>
+                                    <strong>Что могло произойти:</strong>
                                     <ul class="mb-0 mt-2 ps-3">
-                                        <li>У вашей учетной записи недостаточно прав</li>
-                                        <li>Вы пытаетесь получить доступ к защищенному ресурсу</li>
-                                        <li>Требуется авторизация под другим аккаунтом</li>
+                                        <li>Страница была удалена или перемещена</li>
+                                        <li>В адресе страницы допущена ошибка</li>
+                                        <li>Ссылка, по которой вы перешли, устарела</li>
                                     </ul>
                                 </div>
                             </div>
@@ -59,20 +59,40 @@
                                     <a href="{{ route('navigation') }}" class="btn btn-outline-secondary btn-lg">
                                         <i class="fa-solid fa-compass me-2"></i> К навигации
                                     </a>
-                                @else
-                                    <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-lg">
-                                        <i class="fa-solid fa-right-to-bracket me-2"></i> Войти
-                                    </a>
                                 @endauth
                             </div>
 
                         </div>
                     </div>
 
-                    {{-- Дополнительная помощь --}}
+                    {{-- Популярные разделы --}}
+                    @auth
+                        <div class="card border-0 shadow-sm mt-4">
+                            <div class="card-body p-4">
+                                <h4 class="h6 mb-3">
+                                    <i class="fa-solid fa-star text-danger me-2"></i>
+                                    Возможно, вы искали:
+                                </h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="{{ route('region.index') }}" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-map-location-dot me-1"></i> Регионы
+                                    </a>
+                                    <a href="{{ route('pollingStation.index') }}" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-location-dot me-1"></i> Участки для голосования
+                                    </a>
+                                    <a href="{{ route('navigation') }}" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-compass me-1"></i> Навигация
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endauth
+
+                    {{-- Юмористическая подпись --}}
                     <div class="text-center mt-4">
                         <p class="text-body-secondary small mb-0">
-                            Если вы считаете, что это ошибка, обратитесь к администратору системы
+                            <i class="fa-solid fa-ghost me-2"></i>
+                            Эта страница исчезла так же бесследно, как и голоса оппозиции
                         </p>
                     </div>
 
