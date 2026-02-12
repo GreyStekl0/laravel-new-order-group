@@ -1,9 +1,6 @@
 ## Before writing new code
 
-- Use Exa MCP tools to search for up-to-date documentation, code examples, and best practices:
-    - `web_search_exa` — general search for docs and solutions
-    - `get_code_context_exa` — find code examples from GitHub, Stack Overflow, and official docs
-    - `company_research_exa` — research companies, their products, APIs, and services
+- Use Exa MCP tools to search for up-to-date documentation, code examples, and best practices
 
 ## Continuity Ledger (compaction-safe)
 

@@ -2,14 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Contracts\AuthorizesAndValidatesRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends FormRequest implements AuthorizesAndValidatesRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
+    #[Override]
     public function authorize(): bool
     {
         return true;
@@ -20,6 +23,7 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<int, string>|string>
      */
+    #[Override]
     public function rules(): array
     {
         return [
@@ -33,6 +37,7 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, string>
      */
+    #[Override]
     public function messages(): array
     {
         return [

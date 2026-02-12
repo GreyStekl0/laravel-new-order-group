@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PollingStationRequest;
 use App\Models\PollingStation;
 use App\Models\Region;
-use Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class PollingStationController extends Controller
@@ -24,7 +24,7 @@ class PollingStationController extends Controller
     public function index(Request $request): View
     {
         $perPage = filter_var(
-            $request->query('perpage', self::DEFAULT_PER_PAGE),
+            $request->query('perpage', (string) self::DEFAULT_PER_PAGE),
             FILTER_VALIDATE_INT,
             [
                 'options' => [
@@ -47,7 +47,9 @@ class PollingStationController extends Controller
      */
     public function create(): View
     {
-        Gate::authorize('manage-polling-stations');
+        if (! Gate::allows('manage-polling-stations')) {
+            abort(403);
+        }
 
         return view('polling_station_create', [
             'regions' => Region::all(),
@@ -86,7 +88,9 @@ class PollingStationController extends Controller
      */
     public function edit(string $id): View
     {
-        Gate::authorize('manage-polling-stations');
+        if (! Gate::allows('manage-polling-stations')) {
+            abort(403);
+        }
 
         return view('polling_station_edit', [
             'pollingStation' => PollingStation::findOrFail($id),
@@ -100,6 +104,8 @@ class PollingStationController extends Controller
     public function update(PollingStationRequest $request, string $id): RedirectResponse|Redirector
     {
         $validated = $request->validated();
+
+        /** @var PollingStation $pollingStation */
         $pollingStation = PollingStation::findOrFail($id);
         $pollingStation->update($validated);
 
@@ -111,9 +117,13 @@ class PollingStationController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        Gate::authorize('manage-polling-stations');
+        if (! Gate::allows('manage-polling-stations')) {
+            abort(403);
+        }
 
-        PollingStation::findOrFail($id)->delete();
+        /** @var PollingStation $pollingStation */
+        $pollingStation = PollingStation::findOrFail($id);
+        $pollingStation->delete();
 
         return redirect()
             ->route('pollingStation.index')

@@ -2,16 +2,19 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Contracts\AuthorizesAndValidatesRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Override;
 
-class PollingStationRequest extends FormRequest
+class PollingStationRequest extends FormRequest implements AuthorizesAndValidatesRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
+    #[Override]
     public function authorize(): bool
     {
         return Gate::allows('manage-polling-stations');
@@ -22,6 +25,7 @@ class PollingStationRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<int, string>|string>
      */
+    #[Override]
     public function rules(): array
     {
         $pollingStationId = $this->route('id');
@@ -47,6 +51,7 @@ class PollingStationRequest extends FormRequest
      *
      * @return array<string, string>
      */
+    #[Override]
     public function messages(): array
     {
         return [
