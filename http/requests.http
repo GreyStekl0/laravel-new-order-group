@@ -1,0 +1,28 @@
+@baseUrl = http://127.0.0.1:8000
+@pollingStationId = 1
+@candidateId = 1
+@regionId = 1
+
+### Get all polling stations
+GET {{baseUrl}}/api/PollingStation
+Accept: application/json
+
+### Get one polling station by id
+GET {{baseUrl}}/api/PollingStation/{{pollingStationId}}
+Accept: application/json
+
+### Get all candidates
+GET {{baseUrl}}/api/Candidate
+Accept: application/json
+
+### Get one candidate by id
+GET {{baseUrl}}/api/Candidate/{{candidateId}}
+Accept: application/json
+
+### Get all regions
+GET {{baseUrl}}/api/Region
+Accept: application/json
+
+### Get one region by id
+GET {{baseUrl}}/api/Region/{{regionId}}
+Accept: application/json
