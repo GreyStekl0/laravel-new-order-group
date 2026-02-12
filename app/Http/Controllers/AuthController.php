@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
-            'email' => 'required|mail',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -46,13 +46,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        if ($user instanceof User) {
-            $tokenIds = $user->tokens()->pluck('id')->all();
-
-            if ($tokenIds !== []) {
-                PersonalAccessToken::destroy($tokenIds);
-            }
-        }
+        $user->tokens()->delete();
 
         return response()->json(['message' => 'Logged out from all devices']);
     }
