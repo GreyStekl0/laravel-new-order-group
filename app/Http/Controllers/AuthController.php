@@ -3,38 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-        $fields = $request->validate([
-            'email' => 'required|string',
+        $credentials = $request->validate([
+            'email' => 'required|mail',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::query()->where('email', $credentials['email'])->first();
 
-        if (! $user) {
-            return response(['message' => 'Wrong email'], 401);
+        if ($user === null || ! Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        if (! Hash::check($fields['password'], $user->password)) {
-            return response(['message' => 'Wrong password'], 401);
-        }
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
-        $response = ['user' => $user, 'token' => $token];
-
-        return response($response, 201);
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
-        auth()->user()->tokens()->delete();
+        $token = $request->user()?->currentAccessToken();
 
-        return response(['message' => 'Logged out']);
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        return response()->json(['message' => 'Logged out']);
+    }
+
+    public function logoutAll(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if ($user instanceof User) {
+            $tokenIds = $user->tokens()->pluck('id')->all();
+
+            if ($tokenIds !== []) {
+                PersonalAccessToken::destroy($tokenIds);
+            }
+        }
+
+        return response()->json(['message' => 'Logged out from all devices']);
     }
 }

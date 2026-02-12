@@ -34,10 +34,15 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 ### logout without auth
-GET {{baseUrl}}/api/logout
+POST {{baseUrl}}/api/logout
 Accept: application/json
 
 ### logout with bearer (variable)
-GET {{baseUrl}}/api/logout
+POST {{baseUrl}}/api/logout
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### logout all devices with bearer (variable)
+POST {{baseUrl}}/api/logout-all
 Accept: application/json
 Authorization: Bearer {{auth_token}}

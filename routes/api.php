@@ -5,6 +5,7 @@ use App\Http\Controllers\CandidateControllerApi;
 use App\Http\Controllers\PollingStationControllerApi;
 use App\Http\Controllers\RegionControllerApi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +18,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
+    Route::get('/user', static function (Request $request) {
         return $request->user();
     });
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout-all', [AuthController::class, 'logoutAll']);
 
     Route::get('/PollingStation', [PollingStationControllerApi::class, 'index']);
     Route::get('/PollingStation/{pollingStation}', [PollingStationControllerApi::class, 'show']);
