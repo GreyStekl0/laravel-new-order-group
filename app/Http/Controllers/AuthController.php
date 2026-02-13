@@ -26,7 +26,11 @@ class AuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
         $response = [
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
             'token' => $token,
         ];
 
@@ -35,11 +39,7 @@ class AuthController extends Controller
 
     public function logout(Request $request): Response
     {
-        $token = $request->user()->currentAccessToken();
-
-        if ($token instanceof PersonalAccessToken) {
-            $token->delete();
-        }
+        $request->user()->currentAccessToken()->delete();
 
         return response()->noContent();
     }

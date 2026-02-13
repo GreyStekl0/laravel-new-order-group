@@ -33,6 +33,6 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 ### logout with bearer (auto)
-GET {{baseUrl}}/api/logout
+POST {{baseUrl}}/api/logout
 Accept: application/json
 Authorization: Bearer {{auth_token}}
