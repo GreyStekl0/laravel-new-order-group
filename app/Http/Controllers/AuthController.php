@@ -18,7 +18,7 @@ class AuthController extends Controller
         $user = User::where('email', $fields['email'])->first();
 
         if (! $user) {
-            return response(['message' => 'Wrong email'], 404);
+            return response(['message' => 'Wrong email'], 401);
         }
 
         if (! Hash::check($fields['password'], $user->password)) {
