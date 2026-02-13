@@ -3,41 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Hash;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
         $user = User::where('email', $fields['email'])->first();
 
-        if (! $user) {
-            return response(['message' => 'Wrong email'], 401);
+        if (! $user || ! Hash::check($fields['password'], $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        if (! Hash::check($fields['password'], $user->password)) {
-            return response(['message' => 'Wrong password'], 401);
-        }
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
         $response = [
             'user' => $user,
             'token' => $token,
         ];
 
-        return response($response, 201);
+        return response()->json($response);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): Response
     {
-        auth()->user()->tokens()->delete();
+        $token = $request->user()->currentAccessToken();
 
-        return response(['message' => 'Logged out']);
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        return response()->noContent();
+    }
+
+    public function logoutAll(Request $request): Response
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->noContent();
     }
 }
