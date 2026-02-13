@@ -1,0 +1,38 @@
+@baseUrl = http://127.0.0.1:8000
+
+### @name login
+POST {{baseUrl}}/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "user@mail.com",
+    "password": "userPassword"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
+### region without auth
+GET {{baseUrl}}/api/Region
+Accept: application/json
+
+### region with bearer (auto)
+GET {{baseUrl}}/api/Region
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### login without auth
+GET {{baseUrl}}/api/user
+Accept: application/json
+
+### login with bearer (auto)
+GET {{baseUrl}}/api/user
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### logout with bearer (auto)
+GET {{baseUrl}}/api/logout
+Accept: application/json
+Authorization: Bearer {{auth_token}}
