@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use Gate;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        RateLimiter::for('login', static function (Request $request): Limit {
+            return Limit::perMinute(5)->by($request->ip());
+        });
+
         Paginator::defaultView('pagination::bootstrap-5');
 
         $abilities = [
