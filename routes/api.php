@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout-all', [AuthController::class, 'logoutAll']);
 
     Route::get('/pollingstation', [PollingStationControllerApi::class, 'index']);
+    Route::get('/pollingstations_total', [PollingStationControllerApi::class, 'total']);
     Route::get('/pollingstation/{pollingStation}', [PollingStationControllerApi::class, 'show']);
 
     Route::get('/candidate', [CandidateControllerApi::class, 'index']);
@@ -35,5 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/candidates_total', [CandidateControllerApi::class, 'total']);
 
     Route::get('/region', [RegionControllerApi::class, 'index']);
+    Route::get('/regions_total', [RegionControllerApi::class, 'total']);
     Route::get('/region/{region}', [RegionControllerApi::class, 'show']);
 });

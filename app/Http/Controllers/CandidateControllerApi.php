@@ -8,19 +8,50 @@ use Illuminate\Http\Request;
 
 class CandidateControllerApi extends Controller
 {
+    private const int DEFAULT_PER_PAGE = 5;
+
+    private const int MAX_PER_PAGE = 100;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResponse
     {
-        return response()->json(Candidate::limit($request->perpage ?? 5)
-            ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
-            ->get());
+        $perPage = filter_var(
+            $request->query('perpage', self::DEFAULT_PER_PAGE),
+            FILTER_VALIDATE_INT,
+            [
+                'options' => [
+                    'default' => self::DEFAULT_PER_PAGE,
+                    'min_range' => 1,
+                    'max_range' => self::MAX_PER_PAGE,
+                ],
+            ],
+        );
+
+        $page = filter_var(
+            $request->query('page', 0),
+            FILTER_VALIDATE_INT,
+            [
+                'options' => [
+                    'default' => 0,
+                    'min_range' => 0,
+                ],
+            ],
+        );
+
+        return response()->json(
+            Candidate::query()
+                ->orderBy('id')
+                ->limit($perPage)
+                ->offset($perPage * $page)
+                ->get(),
+        );
     }
 
     public function total(): JsonResponse
     {
-        return response()->json(Candidate::all()->count());
+        return response()->json(Candidate::query()->count());
     }
 
     /**
