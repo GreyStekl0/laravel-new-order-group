@@ -21,18 +21,18 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
+    Route::get('/user', static function (Request $request) {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/logout-all', [AuthController::class, 'logoutAll']);
 
-    Route::get('/PollingStation', [PollingStationControllerApi::class, 'index']);
-    Route::get('/PollingStation/{pollingStation}', [PollingStationControllerApi::class, 'show']);
+    Route::get('/polling-stations', [PollingStationControllerApi::class, 'index']);
+    Route::get('/polling-stations/{pollingStation}', [PollingStationControllerApi::class, 'show']);
 
-    Route::get('/Candidate', [CandidateControllerApi::class, 'index']);
-    Route::get('/Candidate/{candidate}', [CandidateControllerApi::class, 'show']);
+    Route::get('/candidates', [CandidateControllerApi::class, 'index']);
+    Route::get('/candidates/{candidate}', [CandidateControllerApi::class, 'show']);
 
-    Route::get('/Region', [RegionControllerApi::class, 'index']);
-    Route::get('/Region/{region}', [RegionControllerApi::class, 'show']);
+    Route::get('/regions', [RegionControllerApi::class, 'index']);
+    Route::get('/regions/{region}', [RegionControllerApi::class, 'show']);
 });
