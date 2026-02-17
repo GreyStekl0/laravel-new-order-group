@@ -11,9 +11,16 @@ class CandidateControllerApi extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json(Candidate::all());
+        return response()->json(Candidate::limit($request->perpage ?? 5)
+            ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
+            ->get());
+    }
+
+    public function total(): JsonResponse
+    {
+        return response()->json(Candidate::all()->count());
     }
 
     /**
