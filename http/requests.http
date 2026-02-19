@@ -4,7 +4,7 @@
 @regionId = 1
 
 ### Get all polling stations
-GET {{baseUrl}}/api/PollingStation
+GET {{baseUrl}}/api/polling-station
 Accept: application/json
 
 ### Get one polling station by id
