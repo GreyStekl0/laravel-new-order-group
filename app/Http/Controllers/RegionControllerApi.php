@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\ReturnsPaginatedResponse;
+use App\Http\Requests\RegionStoreRequest;
 use App\Models\Region;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
+use Throwable;
 
 class RegionControllerApi extends Controller
 {
@@ -28,43 +29,35 @@ class RegionControllerApi extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RegionStoreRequest $request): JsonResponse
     {
-        if (! Gate::allows('create-region')) {
-            return response()->json([
-                'code' => 1,
-                'message' => 'У вас нет прав на добавление категории',
-            ]);
-        }
+        $disk = Storage::disk('s3');
+        $filePath = null;
 
-        $validated = $request->validate([
-            'name' => 'required|unique:regions|max:255',
-            'image' => 'required|file',
-        ]);
-
-        $file = $request->file('image');
-        // Генерация уникального имени файла
-        $fileName = rand(1, 100000).'_'.$file->getClientOriginalName();
         try {
-            // Загрузка файла в S3
-            $path = Storage::disk('s3')->putFileAs('region_pictures', $file, $fileName);
-            // Получение URL загруженного файла
-            $fileUrl = Storage::disk('s3')->url($path);
-        } catch (Exception $e) {
-            return response()->json([
-                'code' => 2,
-                'message' => 'Ошибка загрузки файла в хранилище S3',
+            $filePath = $disk->putFile('region_pictures', $request->file('image'));
+
+            if (! is_string($filePath)) {
+                throw new RuntimeException('Failed to upload region image to S3.');
+            }
+
+            $region = Region::query()->create([
+                'name' => $request->string('name')->toString(),
+                'picture_url' => $disk->url($filePath),
             ]);
+        } catch (Throwable $exception) {
+            if (is_string($filePath)) {
+                $disk->delete($filePath);
+            }
+
+            report($exception);
+
+            return response()->json([
+                'message' => 'Не удалось создать категорию.',
+            ], 500);
         }
 
-        $region = new Region($validated);
-        $region->picture_url = $fileUrl;
-        $region->save();
-
-        return response()->json([
-            'code' => 0,
-            'message' => 'Категория успешно добавлена',
-        ]);
+        return response()->json($region, 201);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -41,9 +40,5 @@ class AppServiceProvider extends ServiceProvider
         foreach ($abilities as $ability) {
             Gate::define($ability, static fn ($user) => $user->role === 'admin');
         }
-
-        Gate::define('create-region', function (User $user) {
-            return true;
-        });
     }
 }

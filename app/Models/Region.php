@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $picture_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, PollingStation> $pollingStations
@@ -23,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Region whereCreatedAt($value)
  * @method static Builder<static>|Region whereId($value)
  * @method static Builder<static>|Region whereName($value)
+ * @method static Builder<static>|Region wherePictureUrl($value)
  * @method static Builder<static>|Region whereUpdatedAt($value)
  *
  * @mixin Eloquent
