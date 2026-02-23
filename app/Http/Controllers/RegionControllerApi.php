@@ -33,16 +33,17 @@ class RegionControllerApi extends Controller
     {
         $disk = Storage::disk('s3');
         $filePath = null;
+        $validated = $request->validated();
 
         try {
-            $filePath = $disk->putFile('region_pictures', $request->file('image'));
+            $filePath = $disk->putFile('region_pictures', $validated['image']);
 
             if (! is_string($filePath)) {
                 throw new RuntimeException('Failed to upload region image to S3.');
             }
 
-            $region = Region::query()->create([
-                'name' => $request->string('name')->toString(),
+            $region = Region::create([
+                'name' => $validated['name'],
                 'picture_url' => $disk->url($filePath),
             ]);
         } catch (Throwable $exception) {
