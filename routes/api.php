@@ -35,4 +35,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/regions', [RegionControllerApi::class, 'index']);
     Route::get('/regions/{region}', [RegionControllerApi::class, 'show']);
+    Route::post('/regions', [RegionControllerApi::class, 'store']);
 });
