@@ -1,0 +1,33 @@
+@baseUrl = http://127.0.0.1:8000
+
+### @name login
+POST {{baseUrl}}/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@mail.com",
+    "password": "adminPassword"
+}
+
+> {%
+    client.global.set("token", response.body.token);
+%}
+
+### createRegions
+# @name createRegions
+POST {{baseUrl}}/api/regions
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="name"
+
+Ба синг се
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="ba-sing-se.png"
+Content-Type: image/png
+
+< ./ba-sing-se.png
+--WebAppBoundary--

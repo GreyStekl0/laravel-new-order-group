@@ -30,6 +30,14 @@ use Illuminate\Support\Carbon;
 class Region extends Model
 {
     /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'picture_url',
+    ];
+
+    /**
      * @return HasMany<PollingStation, $this>
      */
     public function pollingStations(): HasMany
