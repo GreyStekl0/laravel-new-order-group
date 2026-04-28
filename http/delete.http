@@ -1,0 +1,17 @@
+@baseUrl = http://127.0.0.1:8000
+
+### Login
+# @name login
+POST {{baseUrl}}/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "admin@mail.com",
+  "password": "adminPassword"
+}
+
+### Delete region
+DELETE {{baseUrl}}/api/regions/1
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}

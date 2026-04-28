@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Concerns\ReturnsPaginatedResponse;
 use App\Http\Requests\RegionStoreRequest;
 use App\Models\Region;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 use Throwable;
@@ -22,7 +24,9 @@ class RegionControllerApi extends Controller
     {
         return $this->paginatedIndexResponse(
             $request,
-            Region::query()->orderBy('id'),
+            Region::query()
+                ->where('name', 'LIKE', '%'.$request->search.'%')
+                ->orderBy('id'),
         );
     }
 
@@ -67,5 +71,93 @@ class RegionControllerApi extends Controller
     public function show(Region $region): JsonResponse
     {
         return response()->json($region);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id): JsonResponse
+    {
+        if (! Gate::allows('manage-regions')) {
+            return response()->json([
+                'code' => 1,
+                'message' => 'У вас нет прав на редактирование региона',
+            ]);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|max:255|unique:regions,name,'.$id,
+            'image' => 'nullable|file|image|max:2048',
+        ]);
+
+        try {
+            $region = Region::findOrFail($id);
+            $region->name = $validated['name'];
+
+            // если передан новый файл
+            if ($request->hasFile('image')) {
+                try {
+                    // удаление старого файла из хранилища
+                    if ($region->picture_url) {
+                        $baseUrl = Storage::disk('s3')->getClient()->getEndpoint();
+                        $oldPath = str_replace($baseUrl, '', $region->picture_url);
+
+                        if (Storage::disk('s3')->exists($oldPath)) {
+                            Storage::disk('s3')->delete($oldPath);
+                        }
+                    }
+
+                    $file = $request->file('image');
+                    $fileName = rand(1, 100000).'_'.$file->getClientOriginalName();
+                    $path = Storage::disk('s3')->putFileAs('category_pictures', $file, $fileName);
+                    $region->picture_url = Storage::disk('s3')->url($path);
+                } catch (Exception $e) {
+                    return response()->json([
+                        'message' => 'Error uploading file to S3: ',
+                        'error' => [
+                            'code' => $e->getCode(),
+                            'message' => $e->getMessage(),
+                        ],
+                    ], 500);
+                }
+            }
+
+            $region->save();
+
+            return response()->json([
+                'code' => 0,
+                'message' => 'Регион успешно обновлен',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 2,
+                'message' => 'Ошибка при обновлении: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        if (! Gate::allows('manage-regions')) {
+            return response()->json([
+                'code' => 1,
+                'message' => 'У вас нет прав на удаление региона',
+            ], status: 401, options: JSON_UNESCAPED_UNICODE);
+        }
+
+        $region = Region::find($id);
+        if ($region->pollingStations()->count()) {
+            return response()->json([
+                'code' => 1,
+                'message' => 'Нельзя удалить регион, к которому привязаны участки',
+            ], status: 409, options: JSON_UNESCAPED_UNICODE);
+        }
+
+        $region->delete();
+
+        return response()->json(['code' => 0, 'message' => 'Регион успешно удален'], options: JSON_UNESCAPED_UNICODE);
     }
 }
