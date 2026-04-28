@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
             'manage-candidates',
             'manage-regions',
             'manage-polling-station-results',
+            'delete-region',
         ];
 
         foreach ($abilities as $ability) {
