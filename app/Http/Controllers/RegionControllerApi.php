@@ -150,13 +150,13 @@ class RegionControllerApi extends Controller
 
         $region = Region::find($id);
         if ($region->pollingStations()->count()) {
-            return response()->json(['code' => 1, 'error' => 'Нельзя удалить регион, к которому привязаны участки'], options: JSON_UNESCAPED_UNICODE);
+            return response()->json([
+                'code' => 1,
+                'message' => 'Нельзя удалить регион, к которому привязаны участки',
+            ], status: 409, options: JSON_UNESCAPED_UNICODE);
         }
 
-        $deleted = Region::destroy($id);
-        if ($deleted === 0) {
-            return response()->json(['code' => 1, 'error' => 'Регион не найден'], options: JSON_UNESCAPED_UNICODE);
-        }
+        $region->delete();
 
         return response()->json(['code' => 0, 'message' => 'Регион успешно удален'], options: JSON_UNESCAPED_UNICODE);
     }
