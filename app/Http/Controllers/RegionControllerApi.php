@@ -22,7 +22,9 @@ class RegionControllerApi extends Controller
     {
         return $this->paginatedIndexResponse(
             $request,
-            Region::query()->orderBy('id'),
+            Region::query()
+            ->where('name', 'LIKE', '%' . $request->search . '%')
+            ->orderBy('id'),
         );
     }
 
